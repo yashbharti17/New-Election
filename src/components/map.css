@@ -1,0 +1,124 @@
+path {
+    pointer-events: all;
+  }
+  path:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    fill: Teal;
+  }.map-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+  
+  .app{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .app-container {
+    font-family: "Roboto", Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+    padding: 10px;
+  }
+  
+  .title {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .info-container {
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    text-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .state-name {
+    font-size: 1.8em;
+    color: #ff7f50;
+    margin: 10px 0;
+  }
+  
+  .state-score {
+    font-size: 1.5em;
+    color: #333;
+    margin: 10px 0;
+  }
+  
+  /* Buttons */
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .upvote-btn,
+  .downvote-btn {
+    font-size: 1em;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .upvote-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .downvote-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .upvote-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
+  
+  .downvote-btn:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+  }
+  
+  /* Instructions */
+  .instruction {
+    font-size: 1.2em;
+    color: #666;
+    margin-top: 20px;
+  }
+  
+
+  /* Tooltip transitions for smooth appearance */
+.tooltip {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.map-container {
+  position: relative; /* Ensures proper positioning for tooltips */
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
