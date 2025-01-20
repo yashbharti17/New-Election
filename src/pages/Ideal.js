@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Ideal = () => {
-  const tableData = [
+  // Define state to store table data
+  const [tableData, setTableData] = useState([
     { id: 1, factor: "Accomplishments", weightage: 0.05, ideal: 100, weightedScore: 5, candidateScore: 78, candidateWeightedScore: 3.9 },
     { id: 2, factor: "Age", weightage: 0.02, ideal: 100, weightedScore: 2, candidateScore: 78, candidateWeightedScore: 1.56 },
     { id: 3, factor: "Anti Corruption stance", weightage: 0.08, ideal: 100, weightedScore: 8, candidateScore: 78, candidateWeightedScore: 6.24 },
@@ -27,12 +28,27 @@ const Ideal = () => {
     { id: 22, factor: "Stand on political issues: Economy", weightage: 0.04, ideal: 100, weightedScore: 4, candidateScore: 78, candidateWeightedScore: 3.12 },
     { id: 23, factor: "Stand on political issues: Immigration", weightage: 0.04, ideal: 100, weightedScore: 4, candidateScore: 78, candidateWeightedScore: 3.12 },
     { id: 24, factor: "Team approach", weightage: 0.05, ideal: 100, weightedScore: 5, candidateScore: 78, candidateWeightedScore: 3.9 },
-  ];
+  ]);
+
+  // Update the candidate score in the state
+  const handleScoreChange = (id, value) => {
+    setTableData((prevData) =>
+      prevData.map((row) =>
+        row.id === id
+          ? { ...row, candidateScore: value, candidateWeightedScore: (row.weightage * value).toFixed(2) }
+          : row
+      )
+    );
+  };
+
+  // Calculate totals
   const totalIdeal = tableData.reduce((acc, row) => acc + row.ideal, 0);
   const totalWeightage = tableData.reduce((acc, row) => acc + row.weightage, 0);
   const totalWeightedScore = tableData.reduce((acc, row) => acc + row.weightedScore, 0);
   const totalCandidateScore = tableData.reduce((acc, row) => acc + row.candidateScore, 0);
-  const totalCandidateWeightedScore = tableData.reduce((acc, row) => acc + row.candidateWeightedScore, 0);
+  const totalCandidateWeightedScore = tableData.reduce(
+    (acc, row) => acc + parseFloat(row.candidateWeightedScore), 0
+  );
 
   return (
     <div className="container mt-4">
@@ -58,7 +74,15 @@ const Ideal = () => {
                 <td>{row.weightage}</td>
                 <td>{row.ideal}</td>
                 <td>{row.weightedScore}</td>
-                <td>{row.candidateScore}</td>
+                {/* Input for candidate score */}
+                <td>
+                  <input
+                    type="number"
+                    value={row.candidateScore}
+                    onChange={(e) => handleScoreChange(row.id, parseFloat(e.target.value))}
+                    className="form-control"
+                  />
+                </td>
                 <td>{row.candidateWeightedScore}</td>
               </tr>
             ))}

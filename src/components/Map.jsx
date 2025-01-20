@@ -1,31 +1,35 @@
 import React, { useState } from "react";
 import USAMap from "react-usa-map";
-import statesJson from "../states.json";
+import statesJson from "../states.json"; // Assume you have this JSON file
 import "./map.css";
 
 export default function Map() {
   const initialStates = statesJson.data.map((state) => ({
     ...state,
-    score: 0, // Add an initial score for each state
+    candidate1Votes: 0,
+    candidate2Votes: 0,
+    dominantParty: null,
+    dominantPartyAbbr: null,
+    abbreviationPosition: { x: 0, y: 0 } // Coordinates for abbreviation (to be customized)
   }));
 
   const [states, setStates] = useState(initialStates);
-  const [selectedState, setSelectedState] = useState(null); // Store the selected state
-  const [hoveredState, setHoveredState] = useState(null); // Store the hovered state
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 }); // Tooltip position
+  const [selectedState, setSelectedState] = useState(null);
 
   const mapCustomization = () => {
     const customization = {};
     states.forEach((state) => {
       const abbreviation = state.attributes.abbreviation;
+      let fillColor = "#c0c0c0"; // Default color (light gray)
+
+      if (state.dominantParty === "Candidate 1") {
+        fillColor = "#FF5733"; // Candidate 1's color
+      } else if (state.dominantParty === "Candidate 2") {
+        fillColor = "skyblue"; // Candidate 2's color
+      }
+
       customization[abbreviation] = {
-        fill:
-          selectedState &&
-          selectedState.attributes.abbreviation === abbreviation
-            ? "#ff7f50" // Coral color for selected state
-            : hoveredState === abbreviation
-            ? "#90ee90" // Light green for hover
-            : "#c0c0c0", // Default color (light gray)
+        fill: fillColor,
         stroke: "#333", // Border color for all states
         strokeWidth: 1,
       };
@@ -35,114 +39,127 @@ export default function Map() {
 
   const mapHandler = (e) => {
     const stateAbbreviation = e.target.dataset.name;
-    const state = states.find(
-      (s) => s.attributes.abbreviation === stateAbbreviation
-    );
+    const state = states.find((s) => s.attributes.abbreviation === stateAbbreviation);
     if (state) {
-      setSelectedState(state); // Set the clicked state as the selected state
+      setSelectedState(state);
     }
   };
 
-  const upvoteHandler = () => {
+  const voteHandler = (candidate) => {
     if (selectedState) {
+      const updatedState = {
+        ...selectedState,
+        [`${candidate}Votes`]: selectedState[`${candidate}Votes`] + 1,
+      };
+
+      const dominantParty =
+        updatedState.candidate1Votes > updatedState.candidate2Votes
+          ? "Candidate 1"
+          : updatedState.candidate1Votes < updatedState.candidate2Votes
+          ? "Candidate 2"
+          : null;
+
+      const dominantPartyAbbr = dominantParty === "Candidate 1" ? "C1" : dominantParty === "Candidate 2" ? "C2" : null;
+
+      updatedState.dominantParty = dominantParty;
+      updatedState.dominantPartyAbbr = dominantPartyAbbr;
+
       setStates((prevStates) =>
         prevStates.map((state) =>
           state.attributes.abbreviation === selectedState.attributes.abbreviation
-            ? { ...state, score: state.score + 1 }
+            ? updatedState
             : state
         )
       );
-      setSelectedState((prevState) => ({
-        ...prevState,
-        score: prevState.score + 1,
-      }));
+
+      setSelectedState(updatedState);
     }
   };
 
-  const downvoteHandler = () => {
-    if (selectedState) {
-      setStates((prevStates) =>
-        prevStates.map((state) =>
-          state.attributes.abbreviation === selectedState.attributes.abbreviation
-            ? { ...state, score: state.score - 1 }
-            : state
-        )
-      );
-      setSelectedState((prevState) => ({
-        ...prevState,
-        score: prevState.score - 1,
-      }));
-    }
-  };
+  const getAbbreviationPosition = (abbreviation) => {
+    const positions = {
+      AL: { x: 10, y: 30 },
+      AK: { x: 20, y: 40 },
+      // Add positions for other states...
+    };
 
-  const onHover = (e) => {
-    const hoveredAbbreviation = e.target.dataset.name;
-    const state = states.find(
-      (s) => s.attributes.abbreviation === hoveredAbbreviation
-    );
-    if (state) {
-      setHoveredState(state.attributes.name); // Set the hovered state's name
-      const rect = e.target.getBoundingClientRect(); // Get bounding box of the state
-      setTooltipPosition({
-        x: rect.left + rect.width / 2, // Tooltip position X
-        y: rect.top - 20, // Tooltip position Y (above the state)
-      });
-    }
-  };
-
-  const onHoverExit = () => {
-    setHoveredState(null); // Clear the hovered state
+    return positions[abbreviation] || { x: 0, y: 0 }; // Default position if not found
   };
 
   return (
     <div className="app-container">
-      <h1 className="title">Interactive USA Map</h1>
+      <h1 className="title">Interactive USA Election Map</h1>
       <div className="map-container">
         <USAMap
           customize={mapCustomization()}
           onClick={mapHandler}
-          onMouseOver={onHover}
-          onMouseOut={onHoverExit}
         />
-        {hoveredState && (
-          <div
-            className="tooltip"
-            style={{
-              position: "absolute",
-              top: `${tooltipPosition.y}px`,
-              left: `${tooltipPosition.x}px`,
-              transform: "translate(-50%, -100%)",
-              backgroundColor: "#333",
-              color: "#fff",
-              padding: "5px 10px",
-              borderRadius: "5px",
-              fontSize: "14px",
-              pointerEvents: "none",
-            }}
-          >
-            {hoveredState}
-          </div>
-        )}
+        {/* Render abbreviation on top of each state */}
+        {states.map((state) => {
+          const { dominantPartyAbbr, abbreviation } = state;
+          if (dominantPartyAbbr) {
+            const { x, y } = getAbbreviationPosition(abbreviation); // Get position
+
+            return (
+              <div
+                key={abbreviation}
+                className="state-abbreviation"
+                style={{
+                  position: "absolute",
+                  left: `${x}%`,  // Adjust according to your layout
+                  top: `${y}%`,   // Adjust according to your layout
+                  color: "white",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  pointerEvents: "none",
+                  transform: "translate(-50%, -50%)", // Center the abbreviation
+                }}
+              >
+                {dominantPartyAbbr}
+              </div>
+            );
+          }
+          return null;
+        })}
       </div>
 
       {selectedState && (
         <div className="info-container">
           <h2 className="state-name">{selectedState.attributes.name}</h2>
-          <p className="state-score">Score: {selectedState.score}</p>
+          <p className="candidate-votes">
+            Candidate 1 Votes: {selectedState.candidate1Votes}
+          </p>
+          <p className="candidate-votes">
+            Candidate 2 Votes: {selectedState.candidate2Votes}
+          </p>
+
+          {/* Separate dominant party and abbreviation from votes */}
+          
+
           <div className="button-group">
-            <button className="upvote-btn" onClick={upvoteHandler}>
-              👍 Upvote
+            <button className="vote-btn" onClick={() => voteHandler("candidate1")}>
+              Vote for Candidate 1
             </button>
-            <button className="downvote-btn" onClick={downvoteHandler}>
-              👎 Downvote
+            <button className="vote-btn" onClick={() => voteHandler("candidate2")}>
+              Vote for Candidate 2
             </button>
           </div>
+          {selectedState.dominantParty && (
+            <div className="dominant-party">
+              <p>
+                Dominant Party: {selectedState.dominantParty}
+              </p>
+              <p>
+                ({selectedState.dominantPartyAbbr})
+              </p>
+            </div>
+          )}
         </div>
       )}
 
       {!selectedState && (
         <p className="instruction">
-          Click on a state to view its details and update the score.
+          Click on a state to vote for either Candidate 1 or Candidate 2.
         </p>
       )}
     </div>

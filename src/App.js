@@ -12,6 +12,7 @@ import BettingMarket from './pages/BettingMarket';
 import DataSources from './pages/DataSources';
 import ElectionModels from './pages/ElectionModels';
 import ElectionForecasting from './pages/ElectionForecasting';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const center = [37.8, -96]; // Center of the US
