@@ -1,0 +1,110 @@
+/* Page Wrapper */
+.us-elections {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9; /* Light neutral background */
+    color: #333; /* Neutral text color for readability */
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+  }
+  
+  /* Container */
+  .us-elections .container {
+    margin: 0 auto;
+    background-color: #fff; /* White background for contrast */
+    border-radius: 10px; /* Slightly rounded corners */
+    padding: 20px 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  /* Headings */
+  .us-elections h1 {
+    font-size: 2.5rem;
+    color: #2c3e50; /* Dark blue-gray for elegance */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .us-elections h2 {
+    font-size: 1.8rem;
+    color: #34495e; /* Slightly lighter than h1 */
+    margin-bottom: 15px;
+    border-left: 4px solid #3498db; /* Blue accent for section headings */
+    padding-left: 10px;
+  }
+  
+  /* Paragraph Styling */
+  .us-elections p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    text-align: justify; /* Neat alignment */
+  }
+  
+  /* Lists */
+  .us-elections ul {
+    margin: 0;
+    padding: 0;
+    list-style: none; /* No default bullets */
+    margin-bottom: 20px;
+  }
+  
+  .us-elections ul li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+    font-size: 1rem;
+    color: #555; /* Softer text color for list items */
+  }
+  
+  .us-elections ul li::before {
+    content: "•"; /* Simple dot as bullet */
+    color: #3498db; /* Blue accent for bullet */
+    font-size: 1.2rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  
+  /* Buttons (if added) */
+  .us-elections button {
+    background-color: #3498db; /* Primary blue color */
+    color: #fff; /* White text for contrast */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px; /* Soft rounded button */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .us-elections button:hover {
+    background-color: #2980b9; /* Slightly darker blue on hover */
+  }
+  
+  /* Links */
+  .us-elections a {
+    color: #3498db; /* Blue for links */
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .us-elections a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .us-elections h1 {
+      font-size: 2rem;
+    }
+  
+    .us-elections h2 {
+      font-size: 1.5rem;
+    }
+  
+    .us-elections p,
+    .us-elections ul li {
+      font-size: 0.95rem;
+    }
+  }
+  

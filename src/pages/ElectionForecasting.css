@@ -1,0 +1,74 @@
+/* Wrapper */
+.forecasting-page {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    padding: 40px;
+  }
+  
+  /* Container */
+  .forecasting-page .container {
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Headings */
+  .forecasting-page h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #34495e;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .forecasting-page h3 {
+    font-size: 1.75rem;
+    color: #2980b9;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 5px;
+  }
+  
+  /* Paragraphs */
+  .forecasting-page p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+  
+  /* List Items */
+  .forecasting-page ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  
+  .forecasting-page li {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  
+  /* Forecasting Item */
+  .forecasting-page .forecasting-item {
+    margin-bottom: 30px;
+  }
+  
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .forecasting-page h1 {
+      font-size: 2rem;
+    }
+  
+    .forecasting-page h3 {
+      font-size: 1.5rem;
+    }
+  
+    .forecasting-page p {
+      font-size: 0.95rem;
+    }
+  }
+  

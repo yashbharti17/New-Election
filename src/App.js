@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import './index.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './index.css'; // Ensure this contains the CSS you provided
 import ElectionProcess from './ElectionProcess';
-import { statesData } from './data'; // Ensure this is properly imported and contains valid GeoJSON data
+import { statesData } from './data';
 import Map from './components/Map';
 import ElectionNavbar from './components/ElectionNavbar';
-
-
+import Ideal from './pages/Ideal';
+import Background from './pages/Background';
+import UpcomingElection from './pages/UpcomingElection';
+import BettingMarket from './pages/BettingMarket';
+import DataSources from './pages/DataSources';
+import ElectionModels from './pages/ElectionModels';
+import ElectionForecasting from './pages/ElectionForecasting';
 
 function App() {
   const center = [37.8, -96]; // Center of the US
@@ -13,7 +19,6 @@ function App() {
   const [hoveredState, setHoveredState] = useState(null);
   const [isTopRightInfoOpen, setIsTopRightInfoOpen] = useState(false);
 
-  // Default scores for states (initialize with statesData)
   const [stateScores, setStateScores] = useState(() => {
     const scores = {};
     statesData.features.forEach((state) => {
@@ -22,7 +27,6 @@ function App() {
     return scores;
   });
 
-  // Update score for a state
   const updateScore = (stateName, change) => {
     setStateScores((prevScores) => ({
       ...prevScores,
@@ -30,57 +34,25 @@ function App() {
     }));
   };
 
-  const HoverInfo = () => (
-    <div className="hover-info">
-      {hoveredState ? (
-        <p>
-          <strong>{hoveredState.name}</strong>: {hoveredState.score}
-        </p>
-      ) : (
-        <p>Hover over a state to see its score.</p>
-      )}
-    </div>
-  );
-
-  // Utility function to determine the color based on the score
-  const getColor = (score) => {
-    return score > 20
-      ? '#006400' // Dark green
-      : score > 10
-        ? '#228B22' // Forest green
-        : score > 0
-          ? '#7FFF00' // Chartreuse green
-          : '#FF6347'; // Tomato red
-  };
-
   const InfoPanel = () => (
-    <>
-      <div className="info-panel">
-        <div>
-          {selectedState ? (
-            <>
-              <h2>{selectedState}</h2>
-              <p>Score: {stateScores[selectedState]}</p>
-              <button onClick={() => updateScore(selectedState, 1)}>Vote Up</button>
-              <button onClick={() => updateScore(selectedState, -1)}>Vote Down</button>
-
-              <HoverInfo />
-            </>
-          ) : (
-            <p>Click on a state to see details.</p>
-          )}
-        </div>
-
-
-        {/* Toggle Button for TopRightInfo */}
-        <button
-          className="toggle-button"
-          onClick={() => setIsTopRightInfoOpen((prev) => !prev)}
-        >
-          {isTopRightInfoOpen ? 'Hide Scores' : 'Show Scores'}
-        </button>
-      </div>
-    </>
+    <div className="info-panel">
+      {selectedState ? (
+        <>
+          <h2>{selectedState}</h2>
+          <p>Score: {stateScores[selectedState]}</p>
+          <button onClick={() => updateScore(selectedState, 1)}>Vote Up</button>
+          <button onClick={() => updateScore(selectedState, -1)}>Vote Down</button>
+        </>
+      ) : (
+        <p>Click on a state to see details.</p>
+      )}
+      <button
+        className="toggle-button"
+        onClick={() => setIsTopRightInfoOpen((prev) => !prev)}
+      >
+        {isTopRightInfoOpen ? 'Hide Scores' : 'Show Scores'}
+      </button>
+    </div>
   );
 
   const TopRightInfo = () => (
@@ -96,30 +68,49 @@ function App() {
     </div>
   );
 
-  // US boundary coordinates for the map
-  // const usBounds = [
-  //   [24.396308, -125.0], // Southwest corner (Hawaii is excluded here)
-  //   [49.384358, -66.93457], // Northeast corner
-  // ];
-
-
   return (
-    <>
-    <ElectionNavbar/> 
+    <Router>
+      <ElectionNavbar />
       <div className="app">
+        <Routes>
+          {/* Home Page */}
+          <Route
+            path="/"
+            element={
+              <div className="home-page">
+                {/* Map Section */}
+                <Map
+                  setSelectedState={setSelectedState}
+                  setHoveredState={setHoveredState}
+                  statesData={statesData}
+                />
 
-        <Map/>
+                {/* Info Panel */}
+                {selectedState && <InfoPanel />}
 
-        {/* Conditionally Render TopRightInfo */}
-        {isTopRightInfoOpen && <TopRightInfo />}
+                {/* Top Right Info (optional toggleable) */}
+                {isTopRightInfoOpen && <TopRightInfo />}
 
-        
+                {/* Election Process Section (below Map) */}
+                <div className="election-process-container">
+                  <ElectionProcess />
+                </div>
+              </div>
+            }
+          />
 
-        <br />
-        <br />
+          {/* Ideal Page */}
+          <Route path="/ideal" element={<Ideal />} />
+          <Route path="/background" element={<Background />} />
+          
+          <Route path="/upcoming-election" element={<UpcomingElection />} />
+          <Route path="/betting-market" element={<BettingMarket />} />
+          <Route path="/data-sources" element={<DataSources />} />
+          <Route path="/model" element={<ElectionModels />} />
+          <Route path="/forecasting" element={<ElectionForecasting />} />
+        </Routes>
       </div>
-      <ElectionProcess />
-    </>
+    </Router>
   );
 }
 

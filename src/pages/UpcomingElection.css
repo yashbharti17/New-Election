@@ -1,0 +1,90 @@
+/* Wrapper */
+.upcoming-elections {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc; /* Light blue-gray background */
+    color: #333; /* Neutral text color */
+    padding: 20px;
+  }
+  
+  /* Container */
+  .upcoming-elections .container {
+    background-color: #fff; /* White background for content */
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin: 20px auto;
+  }
+  
+  /* Headings */
+  .upcoming-elections h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50; /* Dark gray for main heading */
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .upcoming-elections h2 {
+    font-size: 1.8rem;
+    color: #0056b3; /* Vibrant blue for section headings */
+    margin-bottom: 15px;
+    border-left: 4px solid #3498db; /* Blue accent for headings */
+    padding-left: 10px;
+  }
+  
+  /* Paragraphs */
+  .upcoming-elections p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  /* Lists */
+  .upcoming-elections ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .upcoming-elections ul li {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 25px;
+  }
+  
+  .upcoming-elections ul li::before {
+    content: "•"; /* Simple dot as bullet */
+    color: #3498db; /* Blue accent for bullet points */
+    position: absolute;
+    left: 0;
+    font-size: 1.5rem;
+  }
+  
+  /* Links */
+  .upcoming-elections a {
+    color: #0056b3;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .upcoming-elections a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .upcoming-elections h1 {
+      font-size: 2rem;
+    }
+  
+    .upcoming-elections h2 {
+      font-size: 1.5rem;
+    }
+  
+    .upcoming-elections p,
+    .upcoming-elections ul li {
+      font-size: 0.95rem;
+    }
+  }
+  
