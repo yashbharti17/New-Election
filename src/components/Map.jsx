@@ -127,10 +127,10 @@ export default function Map() {
         <div className="info-container">
           <h2 className="state-name">{selectedState.attributes.name}</h2>
           <p className="candidate-votes">
-            Candidate 1 Votes: {selectedState.candidate1Votes}
+            Primaries Votes: {selectedState.candidate1Votes}
           </p>
           <p className="candidate-votes">
-            Candidate 2 Votes: {selectedState.candidate2Votes}
+          Caucuses Votes: {selectedState.candidate2Votes}
           </p>
 
           {/* Separate dominant party and abbreviation from votes */}
@@ -138,10 +138,10 @@ export default function Map() {
 
           <div className="button-group">
             <button className="vote-btn" onClick={() => voteHandler("candidate1")}>
-              Vote for Candidate 1
+              Vote for Primaries
             </button>
             <button className="vote-btn" onClick={() => voteHandler("candidate2")}>
-              Vote for Candidate 2
+              Vote for Caucuses
             </button>
           </div>
           {selectedState.dominantParty && (
