@@ -6,11 +6,11 @@ import "./map.css";
 export default function Map() {
   const initialStates = statesJson.data.map((state) => ({
     ...state,
-    candidate1Votes: 0,
-    candidate2Votes: 0,
+    primariesVotes: 0,
+    caucusesVotes: 0,
     dominantParty: null,
     dominantPartyAbbr: null,
-    abbreviationPosition: { x: 0, y: 0 } // Coordinates for abbreviation (to be customized)
+    abbreviationPosition: { x: 0, y: 0 }, // Coordinates for abbreviation (to be customized)
   }));
 
   const [states, setStates] = useState(initialStates);
@@ -22,10 +22,10 @@ export default function Map() {
       const abbreviation = state.attributes.abbreviation;
       let fillColor = "#c0c0c0"; // Default color (light gray)
 
-      if (state.dominantParty === "Candidate 1") {
-        fillColor = "#FF5733"; // Candidate 1's color
-      } else if (state.dominantParty === "Candidate 2") {
-        fillColor = "skyblue"; // Candidate 2's color
+      if (state.dominantParty === "Primaries") {
+        fillColor = "#FF5733"; // Primaries' color
+      } else if (state.dominantParty === "Caucuses") {
+        fillColor = "skyblue"; // Caucuses' color
       }
 
       customization[abbreviation] = {
@@ -45,21 +45,21 @@ export default function Map() {
     }
   };
 
-  const voteHandler = (candidate) => {
+  const voteHandler = (party) => {
     if (selectedState) {
       const updatedState = {
         ...selectedState,
-        [`${candidate}Votes`]: selectedState[`${candidate}Votes`] + 1,
+        [`${party}Votes`]: selectedState[`${party}Votes`] + 1,
       };
 
       const dominantParty =
-        updatedState.candidate1Votes > updatedState.candidate2Votes
-          ? "Candidate 1"
-          : updatedState.candidate1Votes < updatedState.candidate2Votes
-          ? "Candidate 2"
+        updatedState.primariesVotes > updatedState.caucusesVotes
+          ? "Primaries"
+          : updatedState.primariesVotes < updatedState.caucusesVotes
+          ? "Caucuses"
           : null;
 
-      const dominantPartyAbbr = dominantParty === "Candidate 1" ? "C1" : dominantParty === "Candidate 2" ? "C2" : null;
+      const dominantPartyAbbr = dominantParty === "Primaries" ? "P" : dominantParty === "Caucuses" ? "C" : null;
 
       updatedState.dominantParty = dominantParty;
       updatedState.dominantPartyAbbr = dominantPartyAbbr;
@@ -106,8 +106,8 @@ export default function Map() {
                 className="state-abbreviation"
                 style={{
                   position: "absolute",
-                  left: `${x}%`,  // Adjust according to your layout
-                  top: `${y}%`,   // Adjust according to your layout
+                  left: `${x}%`, // Adjust according to your layout
+                  top: `${y}%`, // Adjust according to your layout
                   color: "white",
                   fontSize: "12px",
                   fontWeight: "bold",
@@ -127,31 +127,24 @@ export default function Map() {
         <div className="info-container">
           <h2 className="state-name">{selectedState.attributes.name}</h2>
           <p className="candidate-votes">
-            Primaries Votes: {selectedState.candidate1Votes}
+            Primaries Votes: {selectedState.primariesVotes}
           </p>
           <p className="candidate-votes">
-          Caucuses Votes: {selectedState.candidate2Votes}
+            Caucuses Votes: {selectedState.caucusesVotes}
           </p>
 
-          {/* Separate dominant party and abbreviation from votes */}
-          
-
           <div className="button-group">
-            <button className="vote-btn" onClick={() => voteHandler("candidate1")}>
+            <button className="vote-btn" onClick={() => voteHandler("primaries")}>
               Vote for Primaries
             </button>
-            <button className="vote-btn" onClick={() => voteHandler("candidate2")}>
+            <button className="vote-btn" onClick={() => voteHandler("caucuses")}>
               Vote for Caucuses
             </button>
           </div>
           {selectedState.dominantParty && (
             <div className="dominant-party">
-              <p>
-                Dominant Party: {selectedState.dominantParty}
-              </p>
-              <p>
-                ({selectedState.dominantPartyAbbr})
-              </p>
+              <p>Dominant Party: {selectedState.dominantParty}</p>
+              <p>({selectedState.dominantPartyAbbr})</p>
             </div>
           )}
         </div>
@@ -159,7 +152,7 @@ export default function Map() {
 
       {!selectedState && (
         <p className="instruction">
-          Click on a state to vote for either Candidate 1 or Candidate 2.
+          Click on a state to vote for either Primaries or Caucuses.
         </p>
       )}
     </div>
